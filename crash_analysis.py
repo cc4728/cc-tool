@@ -27,11 +27,15 @@ def get_all_file(filepath, list, key=None):
         return
     if os.path.isfile(filepath):
         if not key:
-            list.append(file)
+            list.append(filepath)
         else:
-            names = file.split('\\')
-            if key in names[-1:]:
-                list.append(file)
+            if '\\' in filepath:
+                names = filepath.split('\\')
+                if key in names[-1:]:
+                    list.append(filepath)
+            else:
+                if key in filepath:
+                    list.append(filepath)
         return
 
     files = os.listdir(filepath)
