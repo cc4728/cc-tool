@@ -12,10 +12,9 @@ from lib_adpcm_codec import adpcm2pcm
 #vendor config  usually use （8MHZ，16bit）or（16MHZ,16bit） 
 HCI_FILE = "btsnoop_hci.cfa" 
 
-# Need double check, the frame total length:case1 ,full pkt
-TOTAL_LENGTH_1 = 32
-# Need double check,the frame total length:case2 ,last pkt
-TOTAL_LENGTH_2 = 26
+# Need double check, the frame total length:case1 ,full pkt;case2 last pkt
+TOTAL_LENGTH = [32,26]
+
 #Need double check,handle offset, from the begin of frame
 DATA_HANDLE = 64
 
@@ -106,7 +105,7 @@ def get_raw_data():
 def parse(buf):
     adpcm_buf = []
     for i in buf:
-        if len(i) == TOTAL_LENGTH_1 or len(i) == TOTAL_LENGTH_2:
+        if len(i) in TOTAL_LENGTH:
             if DATA_HANDLE == unpack_from('<H', i, offset=HANDLE_OFFSET)[0] and OPCODE == unpack_from('<B', i, offset=OPCODE_OFFSET)[0]:
                 for byte in i[VOICE_DATA_OFFSET:]:
                     adpcm_buf.append(byte)
